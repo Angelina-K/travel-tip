@@ -30,10 +30,12 @@ function onAddMarker() {
 }
 
 function onGetLocs() {
-  locService.getLocs().then((locs) => {
-    console.log('Locations:', locs);
-    document.querySelector('.locs').innerText = JSON.stringify(locs);
-  });
+  locService.getLocs().then(renderLocs);
+  //   => {
+  // console.log('Locations:', locs);
+  // renderLocs();
+  // document.querySelector('.locs').innerText = JSON.stringify(locs);
+  //   });
 }
 
 function onGetUserPos() {
@@ -62,4 +64,30 @@ function onMyLoc() {
 }
 function onCopyLoc() {
   console.log('onCopyLoc');
+}
+function renderLocs(locs) {
+  const headerStr = `<h4>Locations:</h4>`;
+  const strHtml = locs.map((loc, idx) => {
+    const strLoc = `<div class="loc loc${idx} flex align-center space-between">
+      <div class="flex align-center gap">
+      <h3>${loc.name}</h3>
+      <span>Created At: ${loc.createdAt} <span>
+      <span>Last Update: ${loc.updatedAt} <span>
+      </div>
+      <div>
+      <button onclick="onGoToSaved(${idx})" class="btn go-btn">Go</button>
+      <button onclick="onDeleteSaved(${idx})" class="btn delete-btn">Delete</button>
+      </div>
+      </div>`;
+    return strLoc;
+  });
+  const elLocs = document.querySelector('.locs-container');
+  elLocs.innerHTML = headerStr + strHtml.join('');
+}
+
+function onGoToSaved() {
+  console.log('onGoToSaved');
+}
+function onDeleteSaved() {
+  console.log('onDeleteSaved');
 }

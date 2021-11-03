@@ -51,6 +51,9 @@ img {
 .flex.row {
   flex-direction: row;
 }
+.flex.gap {
+  gap: 15px;
+}
 /* LIST HELPERS */
 .clean-list {
   margin: 0;
@@ -59,6 +62,16 @@ img {
 }
 
 .main-layout {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.btn {
+  width: 80px;
+  height: 40px;
+}
+.header {
+  margin-top: 10px;
+}
+.side {
+  width: 50%;
 }
