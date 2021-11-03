@@ -60,8 +60,28 @@ function onSearch() {
 }
 
 function onCopyLoc() {
-  locService.getLocs().then(copyLoc);
+  let url = new URL('https://angelina-k.github.io/travel-tip/');
+  let params = new URLSearchParams(url.search.slice(1));
+
+  //Add a second foo parameter.
+  params.append('foo', 4);
+  console.log(url);
+  copyToClipboard();
+  // save loc for copy
+  // locService.getLocs().then(copyLoc);
 }
+
+function copyToClipboard() {
+  var dummy = document.createElement('input'),
+    text = window.location.href;
+
+  document.body.appendChild(dummy);
+  dummy.value = text;
+  dummy.select();
+  document.execCommand('copy');
+  // document.body.removeChild(dummy);
+}
+
 function copyLoc(locs) {
   const { lat, lng } = locs;
   const url = `https://angelina-k.github.io/travel-tip/index.html?lat=${lat}&lng=${lng}`;
