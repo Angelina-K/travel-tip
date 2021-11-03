@@ -4,19 +4,19 @@ import { mapService } from './services/map.service.js';
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
-window.onGetLocs = onGetLocs;
+// window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onMapClick = onMapClick;
 window.onGoToSaved = onGoToSaved;
 window.onSearch = onSearch;
-window.onRemoveSaved = onRemoveSaved
-
+window.onRemoveSaved = onRemoveSaved;
+window.onCopyLoc = onCopyLoc;
 
 function onInit() {
     mapService
         .initMap()
         .then(() => {
-            console.log('Map is ready');
+            locService.getLocs().then(renderLocs);
         })
         .catch(() => console.log('Error: cannot init map'));
 }
@@ -34,9 +34,9 @@ function onAddMarker(lat, lng) {
     mapService.addMarker({ lat, lng });
 }
 
-function onGetLocs() {
-    locService.getLocs().then(renderLocs);
-}
+// function onGetLocs() {
+//   locService.getLocs().then(renderLocs);
+// }
 
 function onGetUserPos() {
     getPosition()
@@ -57,7 +57,6 @@ function onPanTo(lat, lng) {
 function onSearch() {
     const elInput = document.querySelector('input[type="search"]');
     const input = elInput.value;
-    let pos
     locService.getLocBySearch(input)
         .then(res => {
             onMapClick(null, res.lat, res.lng, input)
@@ -65,20 +64,47 @@ function onSearch() {
 }
 
 function onCopyLoc() {
-    console.log('onCopyLoc');
+    let url = new URL('https://angelina-k.github.io/travel-tip/');
+    let params = new URLSearchParams(url.search.slice(1));
+
+    //Add a second foo parameter.
+    params.append('foo', 4);
+    console.log(url);
+    copyToClipboard();
+    // save loc for copy
+    // locService.getLocs().then(copyLoc);
+}
+
+function copyToClipboard() {
+    var dummy = document.createElement('input'),
+        text = window.location.href;
+
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand('copy');
+    // document.body.removeChild(dummy);
+}
+
+function copyLoc(locs) {
+    const { lat, lng } = locs;
+    const url = `https://angelina-k.github.io/travel-tip/index.html?lat=${lat}&lng=${lng}`;
+    console.log(url);
 }
 
 function renderLocs(locs) {
     const headerStr = `<h4>Locations:</h4>`;
     const strHtml = locs.map((loc, idx) => {
+        const { name, lat, lng, createdAt, updatedAt } = loc;
+        mapService.addMarker({ lat, lng });
         const strLoc = `<div class="loc loc${idx} flex align-center space-between">
       <div class="flex align-center gap">
-      <h3>${loc.name}</h3>
-      <span>Created At: ${loc.createdAt} <span>
-      <span>Last Update: ${loc.updatedAt} <span>
+      <h3>${name}</h3>
+      <span>Created At: ${createdAt} <span>
+      <span>Last Update: ${updatedAt} <span>
       </div>
       <div>
-      <button onclick="onGoToSaved(${loc.lat},${loc.lng})" class="btn go-btn">Go</button>
+      <button onclick="onGoToSaved(${lat},${lng})" class="btn go-btn">Go</button>
       <button onclick="onRemoveSaved(${idx})" class="btn remove-btn">Delete</button>
       </div>
       </div>`;
@@ -96,7 +122,9 @@ function onGoToSaved(lat, lng) {
 
 function onRemoveSaved(idx) {
     locService.removeLoc(idx);
+    locService.getLocs().then(renderLocs);
 }
+
 function onMapClick(e, lat, lng, address) {
     const locName = prompt('Cool place! How should we call it?');
     if (!locName) return
@@ -112,3 +140,10 @@ function onMapClick(e, lat, lng, address) {
     } else locService.createLoc(locName, lat, lng, address)
     // renderPlaces()
 }
+
+
+//   mapService.panTo(lat, lng);
+//   mapService.addMarker({ lat, lng });
+// }
+
+
