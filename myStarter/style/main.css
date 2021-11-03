@@ -1,0 +1,64 @@
+/* .debug{
+  outline: ;
+} */
+* {
+  box-sizing: border-box;
+}
+/* TYPOGRAPHY */
+
+@font-face {
+  font-family: montserrat;
+  src: url(../fonts/Montserrat-Light.ttf);
+}
+/* @font-face {
+  font-family: montserrat-md;
+  src: url(../fonts/Montserrat-Medium.ttf);
+}
+@font-face {
+  font-family: roboto;
+  src: url(../fonts/Roboto-Light.ttf);
+}
+@font-face {
+  font-family: roboto-md;
+  src: url(../fonts/Roboto-Medium.ttf);
+} */
+
+/* html {
+  } */
+body {
+  font-family: montserrat, sans-serif;
+  margin: 0;
+  height: 100%;
+}
+img {
+  width: 100%;
+}
+
+/* Helpers */
+/* flex */
+.flex {
+  display: flex;
+}
+.flex.align-center {
+  align-items: center;
+}
+.flex.space-between {
+  justify-content: space-between;
+}
+.flex.col {
+  flex-direction: column;
+}
+.flex.row {
+  flex-direction: row;
+}
+/* LIST HELPERS */
+.clean-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.main-layout {
+  margin-left: 20px;
+  margin-right: 20px;
+}
