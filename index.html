@@ -13,8 +13,9 @@
         <h1>TravelTip</h1>
       </div>
       <div class="search-bar flex">
-        <input type="search" /><button class="btn" onclick="onGo()">GO</button
-        ><button class="btn" onclick="onMyloc()">My Location</button>
+        <input type="search" /><button class="btn" onclick="onSearch()">
+          GO</button
+        ><button class="btn" onclick="onGetUserPos()">My Location</button>
       </div>
     </header>
     <main class="flex col main-layout gap">
@@ -34,9 +35,9 @@
     <button onclick="onAddMarker()" class="btn-add-marker">
       Add Marker Speific Location
     </button>
-    <button onclick="onGetUserPos()" class="btn-user-pos">
+    <!-- <button onclick="onGetUserPos()" class="btn-user-pos">
       Get User Position
-    </button>
+    </button> -->
     <button onclick="onGetLocs()" class="btn-get-locs">Get Locations</button>
     <button onclick="onPanTo()" class="btn-pan">Pan Map to Tokyo</button>
 
