@@ -1,5 +1,4 @@
 
-
 export const mapService = {
     initMap,
     addMarker,
@@ -18,6 +17,9 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 center: { lat, lng },
                 zoom: 15
             })
+            gMap.addListener("click", (e) => {
+                onMapClick(e)
+            });
             console.log('Map!', gMap);
         })
 }
@@ -42,7 +44,7 @@ function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
     const API_KEY = ''; //TODO: Enter your API Key
     var elGoogleApi = document.createElement('script');
-    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`;
+    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAxYW_FjuUgnuOXRQY7Re8yde2lPtht1Qk`;
     elGoogleApi.async = true;
     document.body.append(elGoogleApi);
 
