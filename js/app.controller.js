@@ -110,6 +110,5 @@ function onMapClick(e, lat, lng, address) {
                 locService.createLoc(locName, lat, lng, res)
             })
     } else locService.createLoc(locName, lat, lng, address)
-    // saveToStorage('placesDB', gPlacesNames)
     // renderPlaces()
 }
