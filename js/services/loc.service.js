@@ -1,11 +1,13 @@
+import { storageService } from './storage-service.js';
 
 export const locService = {
     getLocs,
     createLoc,
     removeLoc
 }
+const locs_KEY = 'locsDB'
+const locs = storageService.load(locs_KEY) || []
 
-const locs = []
 // { name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
 // { name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
 
@@ -32,11 +34,11 @@ function createLoc(name, lat, lng) {
     }
     console.log('adding new loc..');
     locs.push(loc)
-    // storageService.save(locs_KEY, locs)
+    storageService.save(locs_KEY, locs)
 }
 
 function removeLoc(idx) {
     locs.splice(idx, 1)
-    // storageService.save(locs_KEY, locs)
+    storageService.save(locs_KEY, locs)
 }
 
