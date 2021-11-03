@@ -6,6 +6,7 @@ window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
+window.onMapClick = onMapClick;
 
 function onInit() {
   mapService
@@ -24,18 +25,13 @@ function getPosition() {
   });
 }
 
-function onAddMarker() {
+function onAddMarker(lat, lng) {
   console.log('Adding a marker');
-  mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
+  mapService.addMarker({ lat, lng });
 }
 
 function onGetLocs() {
   locService.getLocs().then(renderLocs);
-  //   => {
-  // console.log('Locations:', locs);
-  // renderLocs();
-  // document.querySelector('.locs').innerText = JSON.stringify(locs);
-  //   });
 }
 
 function onGetUserPos() {
@@ -50,9 +46,10 @@ function onGetUserPos() {
       console.log('err!!!', err);
     });
 }
-function onPanTo() {
+function onPanTo(lat, lng) {
   console.log('Panning the Map');
-  mapService.panTo(35.6895, 139.6917);
+  // mapService.panTo(35.6895, 139.6917);
+  mapService.panTo(lat, lng);
 }
 
 function onGo() {
@@ -66,6 +63,7 @@ function onCopyLoc() {
   console.log('onCopyLoc');
 }
 function renderLocs(locs) {
+  console.log(locs);
   const headerStr = `<h4>Locations:</h4>`;
   const strHtml = locs.map((loc, idx) => {
     const strLoc = `<div class="loc loc${idx} flex align-center space-between">
@@ -85,9 +83,29 @@ function renderLocs(locs) {
   elLocs.innerHTML = headerStr + strHtml.join('');
 }
 
-function onGoToSaved() {
+function onGoToSaved(lat, lang) {
+  mapService.panTo(lat, lng);
   console.log('onGoToSaved');
 }
 function onDeleteSaved() {
   console.log('onDeleteSaved');
+}
+function onMapClick(e) {
+  const locName = prompt('Cool place! How should we call it?');
+  const lat = e.latLng.lat();
+  const lng = e.latLng.lng();
+  onAddMarker(lat, lng);
+  onPanTo(lat, lng);
+  locService.createLoc(locName, lat, lng);
+  // saveToStorage('placesDB', gPlacesNames)
+  // renderPlaces()
+}
+
+function placeMarkerAndPanTo(latLng, map) {
+  let marker = new google.maps.Marker({
+    position: latLng,
+    map: map,
+  });
+  map.panTo(latLng);
+  return { marker };
 }
