@@ -60,13 +60,18 @@ function onSearch() {
 }
 
 function onCopyLoc() {
-  let url = new URL('https://angelina-k.github.io/travel-tip/');
-  let params = new URLSearchParams(url.search.slice(1));
+  console.log(
+    'https://angelina-k.github.io/travel-tip/index.html?lat=32.0749831&lng=34.9120554'
+  );
+  return 'https://angelina-k.github.io/travel-tip/index.html?lat=32.0749831&lng=34.9120554';
 
-  //Add a second foo parameter.
-  params.append('foo', 4);
-  console.log(url);
-  copyToClipboard();
+  // let url = new URL('https://angelina-k.github.io/travel-tip/');
+  // let params = new URLSearchParams(url.search.slice(1));
+
+  // //Add a second foo parameter.
+  // params.append('foo', 4);
+  // console.log(url);
+  // copyToClipboard();
   // save loc for copy
   // locService.getLocs().then(copyLoc);
 }
