@@ -7,6 +7,8 @@ window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onMapClick = onMapClick;
+window.onGoToSaved = onGoToSaved;
+window.onSearch = onSearch;
 
 function onInit() {
   mapService
@@ -37,33 +39,29 @@ function onGetLocs() {
 function onGetUserPos() {
   getPosition()
     .then((pos) => {
-      console.log('User position is:', pos.coords);
-      document.querySelector(
-        '.user-pos'
-      ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`;
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      mapService.panTo(lat, lng);
+      mapService.addMarker({ lat, lng });
     })
     .catch((err) => {
       console.log('err!!!', err);
     });
 }
 function onPanTo(lat, lng) {
-  console.log('Panning the Map');
-  // mapService.panTo(35.6895, 139.6917);
   mapService.panTo(lat, lng);
 }
 
-function onGo() {
-  console.log('onGo');
-  // take input
+function onSearch() {
+  const elInput = document.querySelector('input[type="search"]');
+  const input = elInput.value;
 }
-function onMyLoc() {
-  console.log('onMyLoc');
-}
+
 function onCopyLoc() {
   console.log('onCopyLoc');
 }
+
 function renderLocs(locs) {
-  console.log(locs);
   const headerStr = `<h4>Locations:</h4>`;
   const strHtml = locs.map((loc, idx) => {
     const strLoc = `<div class="loc loc${idx} flex align-center space-between">
@@ -73,8 +71,8 @@ function renderLocs(locs) {
       <span>Last Update: ${loc.updatedAt} <span>
       </div>
       <div>
-      <button onclick="onGoToSaved(${idx})" class="btn go-btn">Go</button>
-      <button onclick="onDeleteSaved(${idx})" class="btn delete-btn">Delete</button>
+      <button onclick="onGoToSaved(${loc.lat},${loc.lng})" class="btn go-btn">Go</button>
+      <button onclick="onRemoveSaved(${idx})" class="btn remove-btn">Delete</button>
       </div>
       </div>`;
     return strLoc;
@@ -83,12 +81,13 @@ function renderLocs(locs) {
   elLocs.innerHTML = headerStr + strHtml.join('');
 }
 
-function onGoToSaved(lat, lang) {
-  mapService.panTo(lat, lng);
+function onGoToSaved(lat, lng) {
+  console.log(lat, lng);
   console.log('onGoToSaved');
+  mapService.panTo(lat, lng);
 }
-function onDeleteSaved() {
-  console.log('onDeleteSaved');
+function onDeleteSaved(idx) {
+  locService.removeLoc(idx);
 }
 function onMapClick(e) {
   const locName = prompt('Cool place! How should we call it?');
