@@ -1,19 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TravelTip</title>
     <link rel="stylesheet" href="style/main.css" />
-  </head>
-  <body>
-    <h1>TravelTip Starter</h1>
-    <div id="map" style="width: 100%; height: 400px"></div>
+</head>
+
+<body>
+
+    <header class="flex space-between">
+        <div class="log">
+            <h1>TravelTip</h1>
+        </div>
+        <div class="search-bar flex">
+            <input type="search"><button class="btn" onclick="onGo()">GO</button><button class="btn"
+                onclick="onMyloc()">My Location</button>
+        </div>
+    </header>
+    <main class="flex col">
+        <section class="title flex space-between">
+            <h3>Location: <span>Central Park</span></h3>
+            <button class="btn" onclick="onCopyLoc()">Copy Location</button>
+        </section>
+
+        <section class="flex col ">
+            <div>
+                <section class="weather"></section>
+                <section class="loc-container">
+                    <p>Locations: <span class="locs"></span></p>
+                </section>
+            </div>
+            <div id="map" style="width: 400px; height: 400px"></div>
+        </section>
+    </main>
+    <!-- ////////////// -->
     <button onclick="onAddMarker()" class="btn-add-marker">
-      Add Marker Speific Location
+        Add Marker Speific Location
     </button>
     <button onclick="onGetUserPos()" class="btn-user-pos">
-      Get User Position
+        Get User Position
     </button>
     <button onclick="onGetLocs()" class="btn-get-locs">Get Locations</button>
     <button onclick="onPanTo()" class="btn-pan">Pan Map to Tokyo</button>
@@ -22,5 +49,6 @@
     <p>Locations: <span class="locs"></span></p>
 
     <script type="module" src="js/app.controller.js"></script>
-  </body>
+</body>
+
 </html>
