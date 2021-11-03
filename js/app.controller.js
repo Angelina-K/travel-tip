@@ -10,17 +10,16 @@ window.onMapClick = onMapClick;
 window.onGoToSaved = onGoToSaved;
 window.onSearch = onSearch;
 window.onRemoveSaved = onRemoveSaved;
-window.onCopyLoc = onCopyLoc;
+window.copyToClipboard = copyToClipboard;
+window.renderCurrentLocation = renderCurrentLocation;
+
 
 const urlSearchParams = new URLSearchParams(window.location.search);
-console.log('urlSearchParams', urlSearchParams)
 const params = Object.fromEntries(urlSearchParams.entries());
-console.log('params', params)
-
 
 function onInit() {
     mapService
-        .initMap()
+        .initMap(+params.lat, +params.lng)
         .then(() => {
             locService.getLocs().then(renderLocs);
         })
@@ -40,10 +39,6 @@ function onAddMarker(lat, lng) {
     mapService.addMarker({ lat, lng });
 }
 
-// function onGetLocs() {
-//   locService.getLocs().then(renderLocs);
-// }
-
 function onGetUserPos() {
     getPosition()
         .then((pos) => {
@@ -56,46 +51,35 @@ function onGetUserPos() {
             console.log('err!!!', err);
         });
 }
+
 function onPanTo(lat, lng) {
     mapService.panTo(lat, lng);
 }
+
 
 function onSearch() {
     const elInput = document.querySelector('input[type="search"]');
     const input = elInput.value;
     locService.getLocBySearch(input)
         .then(res => {
-            onMapClick(null, res.lat, res.lng, input)
+            onPanTo(res.lat, res.lng)
         })
 }
 
-function onCopyLoc() {
-    let url = new URL('https://angelina-k.github.io/travel-tip/');
-    let params = new URLSearchParams(url.search.slice(1));
-
-    //Add a second foo parameter.
-    params.append('foo', 4);
-    console.log(url);
-    copyToClipboard();
-    // save loc for copy
-    // locService.getLocs().then(copyLoc);
-}
-
-function copyToClipboard() {
-    var dummy = document.createElement('input'),
-        text = window.location.href;
+function copyToClipboard(elbtn) {
+    elbtn.innerText = 'Copied!'
+    let pos = getCenterPos()
+    let dummy = document.createElement('input')
+    let text = `${window.location.href}?lat=${pos.lat}&lng=${pos.lng}`
 
     document.body.appendChild(dummy);
     dummy.value = text;
     dummy.select();
     document.execCommand('copy');
-    // document.body.removeChild(dummy);
-}
-
-function copyLoc(locs) {
-    const { lat, lng } = locs;
-    const url = `https://angelina-k.github.io/travel-tip/index.html?lat=${lat}&lng=${lng}`;
-    console.log(url);
+    document.body.removeChild(dummy);
+    setTimeout(() => {
+        elbtn.innerText = 'Copy Location'
+    }, 1500)
 }
 
 function renderLocs(locs) {
@@ -121,8 +105,6 @@ function renderLocs(locs) {
 }
 
 function onGoToSaved(lat, lng) {
-    console.log(lat, lng);
-    console.log('onGoToSaved');
     mapService.panTo(lat, lng);
 }
 
@@ -131,25 +113,42 @@ function onRemoveSaved(idx) {
     locService.getLocs().then(renderLocs);
 }
 
-function onMapClick(e, lat, lng, address) {
+function onMapClick(e, lat, lng) {
     const locName = prompt('Cool place! How should we call it?');
     if (!locName) return
     lat = lat || e.latLng.lat()
     lng = lng || e.latLng.lng()
     onAddMarker(lat, lng)
+    renderWeather()
     onPanTo(lat, lng)
-    if (!address) {
-        locService.getAddress(lat, lng)
-            .then(res => {
-                locService.createLoc(locName, lat, lng, res)
-            })
-    } else locService.createLoc(locName, lat, lng, address)
-    locService.getLocs().then(renderLocs)
+    locService.getAddress(lat, lng)
+        .then(res => {
+            locService.createLoc(locName, lat, lng, res)
+        })
+        .then(() => locService.getLocs().then(renderLocs))
 }
 
+function renderCurrentLocation() {
+    let pos = getCenterPos()
+    locService.getAddress(pos.lat, pos.lng)
+        .then(res => {
+            document.querySelector('h3 span').innerText = res
+            // renderWeather()
+        })
+}
 
-//   mapService.panTo(lat, lng);
-//   mapService.addMarker({ lat, lng });
+// function renderWeather() {
+//     let pos = getCenterPos()
+//     locService.getwWeather(pos.lat, pos.lng)
+//         .then(res => {
+//             console.log(res);
+//         })
+//     console.log('rendering weather')
 // }
 
-
+function getCenterPos() {
+    let map = mapService.getMap()
+    let lat = (map.getCenter()).lat()
+    let lng = (map.getCenter()).lng()
+    return { lat, lng }
+}

@@ -21,7 +21,8 @@
     <main class="flex col main-layout gap">
         <section class="title flex space-between">
             <h3>Current Location: <span>Central Park</span></h3>
-            <button class="btn" onclick="onCopyLoc()">Copy Location</button>
+            <button class="btn" onclick="copyToClipboard(this)">Copy Location</button>
+            <!-- <button class="btn" onclick="copyLoc()">Copy Location</button> -->
         </section>
         <section class="map-content flex space-between">
             <div class="side">
@@ -45,7 +46,7 @@
     <p>Locations: <span class="locs"></span></p> -->
 
     <script type="module" src="js/app.controller.js"></script>
-    <script src="/lib/axios.js"></script>
+    <script src="../lib/axios.js"></script>
 
 </body>
 

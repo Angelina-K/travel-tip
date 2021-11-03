@@ -2,12 +2,17 @@
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    getMap,
 }
 
 var gMap;
 
-function initMap(lat = 32.0749831, lng = 34.9120554) {
+function initMap(lat, lng) {
+    if (!lat && !lng) {
+        lat = 32.0749831
+        lng = 34.9120554
+    }
     console.log('InitMap');
     return _connectGoogleApi()
         .then(() => {
@@ -20,7 +25,9 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
             gMap.addListener("click", (e) => {
                 onMapClick(e)
             });
-            console.log('Map!', gMap);
+            gMap.addListener("dragend", (e) => {
+                renderCurrentLocation()
+            });
         })
 }
 
@@ -38,7 +45,6 @@ function panTo(lat, lng) {
     gMap.panTo(laLatLng);
 }
 
-
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
     const API_KEY = ''; //TODO: Enter your API Key
@@ -51,4 +57,8 @@ function _connectGoogleApi() {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
+}
+
+function getMap() {
+    return gMap
 }
