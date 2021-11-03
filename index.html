@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TravelTip</title>
     <link rel="stylesheet" href="style/main.css" />
-  </head>
+</head>
 
-  <body>
+<body>
     <header class="flex space-between main-layout align-center">
-      <div class="logo">
-        <h1>TravelTip</h1>
-      </div>
-      <div class="search-bar flex">
-        <input type="search" /><button class="btn" onclick="onSearch()">
-          GO</button
-        ><button class="btn" onclick="onGetUserPos()">My Location</button>
-      </div>
+        <div class="logo">
+            <h1>TravelTip</h1>
+        </div>
+        <div class="search-bar flex">
+            <input type="search" /><button class="btn" onclick="onSearch()">
+                GO</button><button class="btn" onclick="onGetUserPos()">My Location</button>
+        </div>
     </header>
     <main class="flex col main-layout gap">
-      <section class="title flex space-between">
-        <h3>Current Location: <span>Central Park</span></h3>
-        <button class="btn" onclick="onCopyLoc()">Copy Location</button>
-      </section>
-      <section class="map-content flex space-between">
-        <div class="side">
-          <section class="weather"></section>
-          <section class="locs-container felx col"></section>
-        </div>
-        <div id="map" style="width: 600px; height: 400px"></div>
-      </section>
+        <section class="title flex space-between">
+            <h3>Current Location: <span>Central Park</span></h3>
+            <button class="btn" onclick="onCopyLoc()">Copy Location</button>
+        </section>
+        <section class="map-content flex space-between">
+            <div class="side">
+                <section class="weather"></section>
+                <section class="locs-container felx col"></section>
+            </div>
+            <div id="map" style="width: 600px; height: 400px"></div>
+        </section>
     </main>
     <!-- ////////////// -->
     <button onclick="onAddMarker()" class="btn-add-marker">
-      Add Marker Speific Location
+        Add Marker Speific Location
     </button>
     <!-- <button onclick="onGetUserPos()" class="btn-user-pos">
       Get User Position
@@ -45,5 +45,8 @@
     <p>Locations: <span class="locs"></span></p> -->
 
     <script type="module" src="js/app.controller.js"></script>
-  </body>
+    <script src="/lib/axios.js"></script>
+
+</body>
+
 </html>
