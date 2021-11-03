@@ -12,6 +12,12 @@ window.onSearch = onSearch;
 window.onRemoveSaved = onRemoveSaved;
 window.onCopyLoc = onCopyLoc;
 
+const urlSearchParams = new URLSearchParams(window.location.search);
+console.log('urlSearchParams', urlSearchParams)
+const params = Object.fromEntries(urlSearchParams.entries());
+console.log('params', params)
+
+
 function onInit() {
     mapService
         .initMap()
@@ -138,7 +144,7 @@ function onMapClick(e, lat, lng, address) {
                 locService.createLoc(locName, lat, lng, res)
             })
     } else locService.createLoc(locName, lat, lng, address)
-    // renderPlaces()
+    locService.getLocs().then(renderLocs)
 }
 
 
