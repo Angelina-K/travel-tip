@@ -4,17 +4,19 @@ import { mapService } from './services/map.service.js';
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
-window.onGetLocs = onGetLocs;
+// window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onMapClick = onMapClick;
 window.onGoToSaved = onGoToSaved;
 window.onSearch = onSearch;
+window.onRemoveSaved = onRemoveSaved;
+window.onCopyLoc = onCopyLoc;
 
 function onInit() {
   mapService
     .initMap()
     .then(() => {
-      console.log('Map is ready');
+      locService.getLocs().then(renderLocs);
     })
     .catch(() => console.log('Error: cannot init map'));
 }
@@ -32,9 +34,9 @@ function onAddMarker(lat, lng) {
   mapService.addMarker({ lat, lng });
 }
 
-function onGetLocs() {
-  locService.getLocs().then(renderLocs);
-}
+// function onGetLocs() {
+//   locService.getLocs().then(renderLocs);
+// }
 
 function onGetUserPos() {
   getPosition()
@@ -58,20 +60,27 @@ function onSearch() {
 }
 
 function onCopyLoc() {
-  console.log('onCopyLoc');
+  locService.getLocs().then(copyLoc);
+}
+function copyLoc(locs) {
+  const { lat, lng } = locs;
+  const url = `https://angelina-k.github.io/travel-tip/index.html?lat=${lat}&lng=${lng}`;
+  console.log(url);
 }
 
 function renderLocs(locs) {
   const headerStr = `<h4>Locations:</h4>`;
   const strHtml = locs.map((loc, idx) => {
+    const { name, lat, lng, createdAt, updatedAt } = loc;
+    mapService.addMarker({ lat, lng });
     const strLoc = `<div class="loc loc${idx} flex align-center space-between">
       <div class="flex align-center gap">
-      <h3>${loc.name}</h3>
-      <span>Created At: ${loc.createdAt} <span>
-      <span>Last Update: ${loc.updatedAt} <span>
+      <h3>${name}</h3>
+      <span>Created At: ${createdAt} <span>
+      <span>Last Update: ${updatedAt} <span>
       </div>
       <div>
-      <button onclick="onGoToSaved(${loc.lat},${loc.lng})" class="btn go-btn">Go</button>
+      <button onclick="onGoToSaved(${lat},${lng})" class="btn go-btn">Go</button>
       <button onclick="onRemoveSaved(${idx})" class="btn remove-btn">Delete</button>
       </div>
       </div>`;
@@ -82,12 +91,12 @@ function renderLocs(locs) {
 }
 
 function onGoToSaved(lat, lng) {
-  console.log(lat, lng);
-  console.log('onGoToSaved');
   mapService.panTo(lat, lng);
+  mapService.addMarker({ lat, lng });
 }
-function onDeleteSaved(idx) {
+function onRemoveSaved(idx) {
   locService.removeLoc(idx);
+  locService.getLocs().then(renderLocs);
 }
 function onMapClick(e) {
   const locName = prompt('Cool place! How should we call it?');
@@ -96,15 +105,13 @@ function onMapClick(e) {
   onAddMarker(lat, lng);
   onPanTo(lat, lng);
   locService.createLoc(locName, lat, lng);
-  // saveToStorage('placesDB', gPlacesNames)
-  // renderPlaces()
 }
 
-function placeMarkerAndPanTo(latLng, map) {
-  let marker = new google.maps.Marker({
-    position: latLng,
-    map: map,
-  });
-  map.panTo(latLng);
-  return { marker };
-}
+// function placeMarkerAndPanTo(latLng, map) {
+//   let marker = new google.maps.Marker({
+//     position: latLng,
+//     map: map,
+//   });
+//   map.panTo(latLng);
+//   return { marker };
+// }
