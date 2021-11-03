@@ -13,11 +13,16 @@ const locs = storageService.load(locs_KEY) || [];
 
 let nextId = 101;
 
+// function getLocs() {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve(locs);
+//     }, 2000);
+//   });
+// }
 function getLocs() {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(locs);
-    }, 2000);
+    resolve(locs);
   });
 }
 

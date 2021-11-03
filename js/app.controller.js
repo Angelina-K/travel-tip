@@ -118,7 +118,7 @@ function onMapClick(e, lat, lng) {
   lat = lat || e.latLng.lat();
   lng = lng || e.latLng.lng();
   onAddMarker(lat, lng);
-  renderWeather();
+  // renderWeather();
   onPanTo(lat, lng);
   locService
     .getAddress(lat, lng)
