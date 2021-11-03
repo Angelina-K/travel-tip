@@ -1,18 +1,15 @@
 import { storageService } from './storage-service.js';
 
-
 export const locService = {
     getLocs,
     createLoc,
     removeLoc,
     getLocBySearch,
-    getAddress
+    getAddress,
+    getwWeather
 }
 const locs_KEY = 'locsDB'
 const locs = storageService.load(locs_KEY) || []
-
-// { name: 'Greatplace', lat: 32.047104, lng: 34.832384 },
-// { name: 'Neveragain', lat: 32.047201, lng: 34.832581 }
 
 let nextId = 101
 
@@ -52,16 +49,24 @@ function getLocBySearch(input) {
     console.log('input', input)
     return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${input}&key=AIzaSyAxYW_FjuUgnuOXRQY7Re8yde2lPtht1Qk`)
         .then(res => {
-            console.log('res', res)
             return res.data.results[0].geometry.location
         })
 }
 
 function getAddress(lat, lng) {
-    console.log('lat, lng', lat, lng)
     return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAxYW_FjuUgnuOXRQY7Re8yde2lPtht1Qk`)
         .then(res => {
             return res.data.results[0].formatted_address
         })
-
 }
+
+// function getwWeather(lat, lng) {
+//     lat = lat.toFixed(2);
+//     lng = lng.toFixed(2);
+//     console.log('lat, lng', lat, lng)
+//     return axios.get(`api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=0cc0f9041908300623a776700a09b0cd`)
+//         .then(res => {
+//             console.log('res', res.weather);
+//             return res
+//         })
+// }
