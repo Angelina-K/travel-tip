@@ -8,6 +8,8 @@ window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onMapClick = onMapClick;
 
+const locs_KEY = 'locsDB'
+
 
 function onInit() {
     mapService
