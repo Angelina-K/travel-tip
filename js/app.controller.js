@@ -77,12 +77,3 @@ function onMapClick(e) {
     // saveToStorage('placesDB', gPlacesNames)
     // renderPlaces()
 }
-
-function placeMarkerAndPanTo(latLng, map) {
-    let marker = new google.maps.Marker({
-        position: latLng,
-        map: map,
-    });
-    map.panTo(latLng);
-    return { marker, }
-}
