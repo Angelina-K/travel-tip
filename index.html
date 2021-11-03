@@ -21,7 +21,9 @@
       <section class="title flex space-between">
         <h3 class="bold">Current Location: <span>Central Park</span></h3>
         <div class="flex align-center space-between gap">
-          <button class="btn" onclick="onCopyLoc()">Copy Location</button>
+          <button class="btn" onclick="copyToClipboard(this)">
+            Copy Location
+          </button>
           <button class="btn" onclick="onGetUserPos()">My Location</button>
         </div>
       </section>
