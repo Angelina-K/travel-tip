@@ -125,6 +125,7 @@ function onMapClick(e) {
   onAddMarker(lat, lng);
   onPanTo(lat, lng);
   locService.createLoc(locName, lat, lng);
+  locService.getLocs().then(renderLocs);
 }
 
 // function placeMarkerAndPanTo(latLng, map) {
