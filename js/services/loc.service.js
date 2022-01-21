@@ -1,5 +1,4 @@
 import { storageService } from './storage-service.js';
-
 export const locService = {
   getLocs,
   createLoc,
@@ -38,8 +37,7 @@ function createLoc(name, lat, lng, address) {
     createdAt: time,
     updatedAt: time,
   };
-  console.log('adding new loc..');
-  console.log('loc', loc);
+
   locs.push(loc);
   storageService.save(locs_KEY, locs);
 }
@@ -51,7 +49,7 @@ function removeLoc(idx) {
 
 function getLocBySearch(input) {
   input = input.replace(' ', '+');
-  console.log('input', input);
+
   return axios
     .get(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${input}&key=AIzaSyAxYW_FjuUgnuOXRQY7Re8yde2lPtht1Qk`
@@ -70,14 +68,3 @@ function getAddress(lat, lng) {
       return res.data.results[0].formatted_address;
     });
 }
-
-// function getwWeather(lat, lng) {
-//     lat = lat.toFixed(2);
-//     lng = lng.toFixed(2);
-//     console.log('lat, lng', lat, lng)
-//     return axios.get(`api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=0cc0f9041908300623a776700a09b0cd`)
-//         .then(res => {
-//             console.log('res', res.weather);
-//             return res
-//         })
-// }

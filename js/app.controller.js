@@ -27,14 +27,12 @@ function onInit() {
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
 function getPosition() {
-  console.log('Getting Pos');
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 }
 
 function onAddMarker(lat, lng) {
-  console.log('Adding a marker');
   mapService.addMarker({ lat, lng });
 }
 
@@ -135,15 +133,6 @@ function renderCurrentLocation() {
     // renderWeather()
   });
 }
-
-// function renderWeather() {
-//     let pos = getCenterPos()
-//     locService.getwWeather(pos.lat, pos.lng)
-//         .then(res => {
-//             console.log(res);
-//         })
-//     console.log('rendering weather')
-// }
 
 function getCenterPos() {
   let map = mapService.getMap();
